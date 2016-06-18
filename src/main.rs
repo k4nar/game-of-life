@@ -77,8 +77,8 @@ fn main() {
     };
 
     // initialization
-    grid.content = grid.content.iter_mut().map(|line| {
-        line.iter_mut().map(|_| {
+    grid.content = grid.content.iter().map(|line| {
+        line.iter().map(|_| {
             match rand::random() {
                 true => State::Alive,
                 false => State::Dead
