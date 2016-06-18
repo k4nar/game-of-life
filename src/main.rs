@@ -28,14 +28,11 @@ struct Grid {
 
 impl fmt::Display for Grid {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut output = "".to_string();
-        for line in &self.content {
-            let mut string_line = "".to_string();
-            for column in line {
-                string_line = string_line + &column.to_string();
-            }
-            output = output + &string_line + "\n";
-        }
+        let output = self.content.iter().map(|line| {
+            line.iter().map(|cell| {
+                cell.to_string()
+            }).collect::<String>() + "\n"
+        }).collect::<String>();
 
         write!(f, "{}", output)
     }
