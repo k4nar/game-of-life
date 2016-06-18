@@ -87,8 +87,8 @@ fn main() {
     }).collect::<Vec<_>>();
 
     loop {
-        grid.content = grid.content.iter().enumerate().map(|(x, line)| {
-            line.iter().enumerate().map(|(y, cell)| {
+        grid.content = grid.content.iter().enumerate().map(|(y, line)| {
+            line.iter().enumerate().map(|(x, cell)| {
                 am_i_alive(&grid, cell, x, y)
             }).collect::<Vec<_>>()
         }).collect::<Vec<_>>();
