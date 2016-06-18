@@ -95,6 +95,7 @@ fn main() {
 
         print!("{}[2J", 27 as char);  // clear the screen
         println!("{}", grid);
+        std::thread::sleep(std::time::Duration::from_millis(500))
     }
 
 }
