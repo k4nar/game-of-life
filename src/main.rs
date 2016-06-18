@@ -42,23 +42,26 @@ impl fmt::Display for Grid {
 }
 
 fn am_i_alive(grid: &Grid, cell: &State, cell_x: usize, cell_y: usize) -> State {
-    let alive_neighbours = grid.content.iter().enumerate().map(|(x, line)| {
-        line.iter().enumerate().map(|(y, cell)| {
-            if (x >= cell_x.saturating_sub(1) && x <= cell_x + 1) &&
-               (y >= cell_y.saturating_sub(1) && y <= cell_y + 1) &&
-               !(x == cell_x && y == cell_y) {
-                return match *cell {
-                    State::Alive => 1,
-                    State::Dead => 0,
-                }
-            }
-            0
-        }).fold(0, std::ops::Add::add)
+    let neighbours_offsets = [
+        (-1 as i32, -1), (-1, 0), (-1, 1),
+        (0, -1), (0, 1),
+        (1, -1), (1, 0), (1, 1)
+    ];
+
+    let nb_alive_neighbours = neighbours_offsets.iter().map(|&(x_offset, y_offset)| {
+        let x = cell_x as i32 + x_offset;
+        let y = cell_y as i32 + y_offset;
+
+        if x < 0 || x as usize >= WIDTH || y < 0 || y as usize >= HEIGHT {
+            return 0;
+        }
+
+        grid.content[y as usize][x as usize] as u32
     }).fold(0, std::ops::Add::add);
 
     match *cell {
-        State::Alive if alive_neighbours < 2 || alive_neighbours > 3 => State::Dead,
-        State::Dead if alive_neighbours == 3 => State::Alive,
+        State::Alive if nb_alive_neighbours < 2 || nb_alive_neighbours > 3 => State::Dead,
+        State::Dead if nb_alive_neighbours == 3 => State::Alive,
         state => state
     }
 }
